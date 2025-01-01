@@ -5,8 +5,8 @@ https://www.pygame.org
 <h2>About:</h2>
 
 - Created January 2025.
-- Coded in Pythona.
-
+- Coded in Python
+  
 <h2>Features:</h2>
 
 - Use of Pygame
