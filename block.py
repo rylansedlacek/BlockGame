@@ -8,26 +8,38 @@ pygame.init()
 # constants:
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-FPS = 60
+
+FPS = 50
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
-skier = pygame.Rect(SCREEN_WIDTH // 2, 500, 50, 50)
+skier = pygame.Rect(SCREEN_WIDTH // 2, 500, 30, 30)
 
 obstacles = [] # array for obstacles
 # ---------------------
 
 def move(keys): # move the block side to side
     if keys[pygame.K_LEFT] and skier.left > 0:
-        skier.x -= 5
+        skier.x -= 6
     if keys[pygame.K_RIGHT] and skier.right < 800:
-        skier.x += 5
+        skier.x += 6
 
 def generateObstacles(): # make the obstacles and populate the array
     x = random.randint(0, 750)
-    theObstacle = pygame.Rect(x, -50, 50, 50)
-    obstacles.append(theObstacle)
+
+    if score < 300:
+        theObstacle = pygame.Rect(x, -50, 50, 50)
+        obstacles.append(theObstacle)
+
+    if score > 300:
+        theObstacle = pygame.Rect(x, -50, 60, 50)
+        obstacles.append(theObstacle)
+
+    if score > 1000:
+        theObstacle = pygame.Rect(x, -50, 70, 50)
+        obstacles.append(theObstacle)
+    
 
 def moveObstacles():
     for theObstacle in obstacles: # move em
@@ -53,17 +65,19 @@ def updateScore():
 
 def draw_game():
 
-    screen.fill((135, 206, 235)) # green background
+    screen.fill((0, 0, 0)) # green background
 
-    pygame.draw.rect(screen, (0, 128, 0), skier) # draw player
+    pygame.draw.rect(screen, (57, 255, 20), skier) # draw player
 
     for obstacle in obstacles:
-        pygame.draw.rect(screen, (123, 128, 125), obstacle)  # obstacles drawm
+        pygame.draw.rect(screen, (128, 0, 128), obstacle)  # obstacles drawm
 
     
     font = pygame.font.Font(None, 36) # render text
-    score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+    score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+    fpsText = font.render(f"FPS: {"{:.2f}".format(FPS)}", True, (255, 255, 255))
     screen.blit(score_text, (10, 10))
+    screen.blit(fpsText, (10, 40))
 
     pygame.display.flip()
 
@@ -97,10 +111,11 @@ while True:
             elif score > 1000:
                 generateObstacles()
                 generateObstacles()
-                generateObstacles()
 
         if score % 100 == 0:
-            FPS += .1
+            
+            FPS += .025
+            
         
     spawn_timer = (spawn_timer + 1) % 30  
 
