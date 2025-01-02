@@ -81,9 +81,27 @@ while True:
     keys = pygame.key.get_pressed() # press a key call move
     move(keys)
 
+    obstacleCall = 1
+    x = 2
     
-    if spawn_timer == 0: # generate obstacles based on 30 frames
-        generateObstacles()
+    if score < 100:
+        if spawn_timer == 0:  # Generate obstacles based on 30 frames
+            generateObstacles()
+    else:
+        if spawn_timer == 0:  
+            if score < 300:
+                generateObstacles()
+            elif score > 300:
+                generateObstacles()
+                generateObstacles()
+            elif score > 1000:
+                generateObstacles()
+                generateObstacles()
+                generateObstacles()
+
+        if score % 100 == 0:
+            FPS += .1
+        
     spawn_timer = (spawn_timer + 1) % 30  
 
     moveObstacles() # move them around
